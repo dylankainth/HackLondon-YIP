@@ -1,11 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import { nanoid } from 'nanoid';
+import SubjectSearch from '../partials/SubjectSearch';
+import HeroHome from '../partials/HeroHome';
+import FeaturesHome from '../partials/FeaturesHome';
+import Footer from '../partials/Footer';
+import Header from '../partials/Header';
+import HowItWorks from '../partials/HowItWorks';
 
 function Home() {
-
-    const subjects = ['Math', 'Science', 'History', 'English', 'Art', 'Music', 'Physical Education', 'Computer Science', 'Foreign Language', 'Other'];
-
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [showDropdown, setShowDropdown] = useState(false);
@@ -61,48 +64,22 @@ function Home() {
 
 
     return (
-        <div>
-            <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center' }}>
-                <input
-                    type="text"
-                    placeholder="Search for a subject..."
-                    value={searchTerm}
-                    onChange={handleInputChange}
-                    onFocus={() => {
-                        setShowDropdown(true);
-                    }}
-                    style={{ flex: 1 }}
-                    ref={inputRef}
-                />
-                <button type="submit" style={{ marginLeft: '10px' }}>Search</button>
-                <button onClick={chooseRandomSubject} style={{ marginLeft: '10px' }}>Random</button>
-            </form>
+        <div className="flex flex-col min-h-screen bg-white text-gray-900">
+            {/* Header */}
+            <Header />
 
-            {showDropdown && filteredSubjects.length > 0 && (
-                <ul style={{
-                    border: '1px solid #ccc',
-                    padding: '5px',
-                    listStyleType: 'none',
-                    position: 'absolute',
-                    background: 'white',
-                    width: `${inputWidth}px`, // same width as input
-                    cursor: 'pointer',
-                    marginTop: '5px'
-                }}>
-                    {filteredSubjects.map((subject, index) => (
-                        <li
-                            key={index}
-                            onClick={() => handleSelectSubject(subject)}
-                            style={{ padding: '5px', borderBottom: '1px solid #eee' }}
-                        >
-                            {subject}
-                        </li>
-                    ))}
-                </ul>
-            )}
+            {/* Main Content */}
+            <main className="flex-grow w-screen">
+                <HeroHome />
+                <HowItWorks />
+                <FeaturesHome />
+                <SubjectSearch navigate={navigate} />
+            </main>
 
-
+            {/* Footer */}
+            <Footer />
         </div>
-    )
+    );
 }
-export default Home
+
+export default Home;
