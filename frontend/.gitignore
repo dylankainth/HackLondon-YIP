@@ -25,3 +25,6 @@ dist-ssr
 
 # caches
 **/__pycache__/
+
+# misc
+.env
