@@ -18,6 +18,10 @@
 
 @import "tailwindcss";
 
+@import "tailwindcss/preflight";
+@tailwind utilities;
+/* @tailwind components; */
+
 :root {
     --background-primary: white;
     --background-secondary: '';
@@ -732,8 +736,7 @@ details[open] summary {
         input {
             max-width: 600px;
         }
-    }
 
-    max-width: 600px;
-}
+        max-width: 600px;
+    }
 }
