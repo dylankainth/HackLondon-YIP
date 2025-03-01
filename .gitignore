@@ -24,7 +24,8 @@ dist-ssr
 *.sw?
 
 # caches
-**/__pycache__/
+__pycache__/
+*.pyc
 
 # misc
 .env
