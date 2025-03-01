@@ -11,6 +11,8 @@ class Activities(BaseModel):
 @router.post("/summary")
 async def get_summary(data: Activities):
     text = ". ".join(data.activities)
+    print(text)
+    return {}
     summary = summarize_activities(text)
     return {"summary": summary}
 

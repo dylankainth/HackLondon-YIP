@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { nanoid } from 'nanoid';
 import SubjectSearch from '../partials/SubjectSearch';
 import HeroHome from '../partials/HeroHome';
 import FeaturesHome from '../partials/FeaturesHome';
@@ -8,7 +10,7 @@ import HowItWorks from '../partials/HowItWorks';
 
 function Home() {
     const navigate = useNavigate();
-
+    
     return (
         <div className="flex flex-col min-h-screen bg-white text-gray-900">
             {/* Header */}

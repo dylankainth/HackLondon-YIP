@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import {nanoid} from 'nanoid';
 
 function SubjectSearch({ navigate }) {
     const subjects = ['Math', 'Science', 'History', 'English', 'Art', 'Music', 'Physical Education', 'Computer Science', 'Foreign Language', 'Other'];
@@ -16,7 +17,8 @@ function SubjectSearch({ navigate }) {
 
     const handleSearch = (event) => {
         event.preventDefault();
-        navigate('/call');
+        //navigate('/call');
+        navigate(`/call/${nanoid(8)}/${'testRoomId'}`);
     }
 
     const chooseRandomSubject = (event) => {
