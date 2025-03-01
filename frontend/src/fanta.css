@@ -121,11 +121,32 @@
     font-family: "Eczar", serif;
 }
 
+html,
+body,
+main {
+    width: 100%;
+    max-width: none;
+    /* Remove any max-width constraints */
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body,
+#root {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
 body {
-    background: var(--background-primary);
-    color: var(--color-primary);
-    font-size: 0.875rem;
     line-height: 1.6rem;
+    width: 100%;
+    /* Ensure body takes full width */
+    margin: 0;
+    /* Remove any default margin */
 }
 
 /* Special */
@@ -193,7 +214,10 @@ span {
 
 /* Content Sectioning */
 
-main {}
+main {
+    width: 100vw;
+    min-height: 100vh;
+}
 
 header {}
 
@@ -671,7 +695,7 @@ details[open] summary {
     }
 
     h1 {
-        font-size: 2.25rem;
+        font-size: 4rem;
         line-height: 2.5rem;
     }
 
@@ -701,10 +725,15 @@ details[open] summary {
     }
 
     button {
-        width: fit-content;
+        input {
+            width: fit-content;
+        }
+
+        input {
+            max-width: 600px;
+        }
     }
 
-    input {
-        max-width: 600px;
-    }
+    max-width: 600px;
+}
 }
