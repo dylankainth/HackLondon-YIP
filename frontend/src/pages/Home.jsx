@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
+import { nanoid } from 'nanoid';
 
 function Home() {
 
@@ -22,7 +23,8 @@ function Home() {
     const handleSearch = (event) => {
         event.preventDefault();
         // Implement search logic here
-        navigate('/call');
+        //navigate('/call');
+        navigate(`/room/${nanoid(8)}/${'testRoomId'}`);
     }
 
     // choosing a random subject (im feeling lucky)
