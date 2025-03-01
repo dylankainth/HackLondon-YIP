@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom"
 import Home from "./pages/Home"
 import Call from "./pages/Call.tsx"
-import RoomPage from './pages/Room/RoomPage'
 
 function App() {
 
