@@ -1,51 +1,24 @@
-import { useState } from 'react'
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 
-function Timeline() {
-
+const Timeline = forwardRef((props, ref) => {
+    const [entries, setEntries] = useState([]);
+  
+    // Function to update the timeline entries
+    const addEntry = (entry) => {
+      setEntries((prevEntries) => [...prevEntries, entry]);
+    };
+  
+    useImperativeHandle(ref, () => ({
+      addEntry
+    }));
+  
     return (
-        <>
-            <div className="overflow-auto h-full">
-
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-                Timeline boxTimeline boxTimeline boxTimeline boxTimeline boxboxTimeline boxTimeline boxTimeline
-
-
-            </div>
-
-
-
-        </>
-    )
-}
-
-export default Timeline
+      <div className="overflow-auto h-full">
+        {entries.map((entry, index) => (
+          <div key={index}>{entry}</div>
+        ))}
+      </div>
+    );
+  });
+  
+  export default Timeline;

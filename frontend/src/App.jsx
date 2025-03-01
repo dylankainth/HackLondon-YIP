@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom"
 import Home from "./pages/Home"
-import Call from "./pages/Call"
+import Call from "./pages/Call.tsx"
 import RoomPage from './pages/Room/RoomPage'
 
 function App() {
@@ -13,8 +13,7 @@ function App() {
         <Routes>
 
           <Route path="/" element={<Home />} />
-          <Route path="/call" element={<Call />} />
-          <Route path="/room/:nickname/:roomId" element={<RoomPage />} />
+          <Route path="/call/:nickname/:roomId" element={<Call />} />
 
         </Routes>
 
