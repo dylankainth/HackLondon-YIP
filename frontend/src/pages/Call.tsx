@@ -45,7 +45,7 @@ function Call() {
 
 
     // Call handling code
-    const { nickname,roomId } = useParams();
+    const { nickname, roomId } = useParams();
 
     const [otherUserNickname, setOtherUserNickname] = useState<string | undefined>(undefined);
     const [logs, setLogs] = useState<ILogs>({
@@ -71,7 +71,7 @@ function Call() {
     const peerRef = useRef<RTCPeerConnection>(null!);
     const otherUserId = useRef<string>(null!);
     const myStream = useRef<MediaStream>(null!);
-    
+
     // Create a ref to store the promise
     const cameraStreamPromise = useRef<Promise<MediaStream>>(Promise.resolve(new MediaStream()));
     const rtcInitialized = useRef(false);
@@ -84,25 +84,25 @@ function Call() {
 
         // Request and store the camera feed in a promise
         cameraStreamPromise.current = navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-        .then((stream) => {
-            if (myVideo.current) {
-            myVideo.current.srcObject = stream;
-            
-            myStream.current = stream;
-            
-            try {
-                rtcPeerLogic();
-            } catch (err) {
-                console.error(err);
-                removeMyStream();
-            }
-            }
-            return stream;
-        })
-        .catch((error) => {
-            console.error("Error accessing camera and microphone:", error);
-            throw error;
-        });
+            .then((stream) => {
+                if (myVideo.current) {
+                    myVideo.current.srcObject = stream;
+
+                    myStream.current = stream;
+
+                    try {
+                        rtcPeerLogic();
+                    } catch (err) {
+                        console.error(err);
+                        removeMyStream();
+                    }
+                }
+                return stream;
+            })
+            .catch((error) => {
+                console.error("Error accessing camera and microphone:", error);
+                throw error;
+            });
     }, []);
 
     const rtcPeerLogic = () => {
@@ -172,9 +172,9 @@ function Call() {
                 await peerRef.current.setLocalDescription(answer);
 
                 const payload: ISdpDto = {
-                target: offer.caller,
-                caller: socket.id!,
-                sdp: peerRef.current.localDescription!,
+                    target: offer.caller,
+                    caller: socket.id!,
+                    sdp: peerRef.current.localDescription!,
                 };
                 setLogs(prev => ({ ...prev, sentAnswers: [...prev.sentAnswers, payload] }));
                 socket.emit('answer', payload);
@@ -209,76 +209,76 @@ function Call() {
 
     const createPeer = (otherUserSocketId?: string): RTCPeerConnection => {
         const peer = new RTCPeerConnection({
-        iceServers: [
-            {
-            urls: 'stun:stun.stunprotocol.org',
-            },
-            {
-            urls: 'turn:numb.viagenie.ca',
-            credential: 'muazkh',
-            username: 'webrtc@live.com',
-            },
-            {
-            urls: 'turn:192.158.29.39:3478?transport=udp',
-            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-            username: '28224511:1379330808',
-            },
-            {
-            urls: 'turn:192.158.29.39:3478?transport=tcp',
-            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-            username: '28224511:1379330808',
-            },
-            {
-            urls: 'turn:turn.bistri.com:80',
-            credential: 'homeo',
-            username: 'homeo',
-            },
-            {
-            urls: 'turn:turn.anyfirewall.com:443?transport=tcp',
-            credential: 'webrtc',
-            username: 'webrtc',
-            },
-        ],
+            iceServers: [
+                {
+                    urls: 'stun:stun.stunprotocol.org',
+                },
+                {
+                    urls: 'turn:numb.viagenie.ca',
+                    credential: 'muazkh',
+                    username: 'webrtc@live.com',
+                },
+                {
+                    urls: 'turn:192.158.29.39:3478?transport=udp',
+                    credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+                    username: '28224511:1379330808',
+                },
+                {
+                    urls: 'turn:192.158.29.39:3478?transport=tcp',
+                    credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+                    username: '28224511:1379330808',
+                },
+                {
+                    urls: 'turn:turn.bistri.com:80',
+                    credential: 'homeo',
+                    username: 'homeo',
+                },
+                {
+                    urls: 'turn:turn.anyfirewall.com:443?transport=tcp',
+                    credential: 'webrtc',
+                    username: 'webrtc',
+                },
+            ],
         });
-        
+
         peer.onicecandidate = (event) => {
-        console.log('onicecandidate');
-        if (event.candidate) {
-            const payload: IIceCandidateDto = {
-            target: otherUserId.current,
-            candidate: event.candidate,
-            };
-            setLogs(prev => ({ ...prev, sentICECandidates: [...prev.sentICECandidates, payload] }));
-            socket.emit('ICECandidate', payload);
-        }
+            console.log('onicecandidate');
+            if (event.candidate) {
+                const payload: IIceCandidateDto = {
+                    target: otherUserId.current,
+                    candidate: event.candidate,
+                };
+                setLogs(prev => ({ ...prev, sentICECandidates: [...prev.sentICECandidates, payload] }));
+                socket.emit('ICECandidate', payload);
+            }
         };
 
         peer.ontrack = (event) => {
-        if (partnerVideo.current.srcObject) return;
-        partnerVideo.current.srcObject = event.streams[0];
+            if (partnerVideo.current.srcObject) return;
+            partnerVideo.current.srcObject = event.streams[0];
         };
 
 
         // will be triggered only by the Peer 1
         peer.onnegotiationneeded = async () => {
-        try {
-            if (otherUserId) {
-            const offer = await peerRef.current.createOffer();
-            await peerRef.current.setLocalDescription(offer);
-            setLogs(prev => ({ ...prev, localDescription: JSON.parse(JSON.stringify(offer)) }));
+            try {
+                if (otherUserId) {
+                    const offer = await peerRef.current.createOffer();
+                    await peerRef.current.setLocalDescription(offer);
+                    setLogs(prev => ({ ...prev, localDescription: JSON.parse(JSON.stringify(offer)) }));
 
-            // signal
-            const payload: ISdpDto = {
-                target: otherUserSocketId!,
-                caller: socket.id!,
-                sdp: peerRef.current.localDescription!,
-            };
-            setLogs(prev => ({ ...prev, sentOffers: [...prev.sentOffers, payload] }));
-            socket.emit('offer', payload);
+                    // signal
+                    const payload: ISdpDto = {
+                        target: otherUserSocketId!,
+                        caller: socket.id!,
+                        sdp: peerRef.current.localDescription!,
+                    };
+                    setLogs(prev => ({ ...prev, sentOffers: [...prev.sentOffers, payload] }));
+                    socket.emit('offer', payload);
+                }
+            } catch (err) {
+                console.error(err);
             }
-        } catch (err) {
-            console.error(err);
-        }
         };
 
         return peer;
@@ -286,17 +286,17 @@ function Call() {
 
     const removeMyStream = () => {
         myStream.current.getTracks().forEach((track) => {
-        track.stop();
-        track.dispatchEvent(new Event('ended'));
+            track.stop();
+            track.dispatchEvent(new Event('ended'));
         });
     };
 
     const onCallHangUp = () => {
-        
+
         removeMyStream();
         socket.disconnect();
         if (peerRef.current) {
-        peerRef.current.close();
+            peerRef.current.close();
         }
         console.log("hung up");
         //navigate('/');
@@ -311,7 +311,7 @@ function Call() {
         removeMyStream();
         socket.disconnect();
         if (peerRef.current) {
-        peerRef.current.close();
+            peerRef.current.close();
         }
         console.log("unloaded");
         return true;
@@ -319,16 +319,16 @@ function Call() {
 
     const beforeUnloadHandler = useCallback((ev: BeforeUnloadEvent) => {
         ev.preventDefault();
-      }, []);
-    
-      // Attach the beforeunload handler for unsaved changes (or active call)
-      useEffect(() => {
+    }, []);
+
+    // Attach the beforeunload handler for unsaved changes (or active call)
+    useEffect(() => {
         window.addEventListener('beforeunload', beforeUnloadHandler);
         return () => {
-          window.removeEventListener('beforeunload', beforeUnloadHandler);
+            window.removeEventListener('beforeunload', beforeUnloadHandler);
         };
     }, [beforeUnloadHandler]);
-      
+
     return (
         <div className="grid w-full h-screen overflow-hidden grid-cols-3 gap-4 p-4 mx-auto max-w-screen-px-4">
 
@@ -382,18 +382,18 @@ function Call() {
                     <div className={'video-container'}>
                         {/*ME*/}
                         <video
-                        className={'my-video'}
-                        ref={myVideo}
-                        autoPlay={true}
-                        muted={true} />
+                            className={'my-video'}
+                            ref={myVideo}
+                            autoPlay={true}
+                            muted={true} />
 
                         {/*PARTNER*/}
                         <video
-                        className={'partner-video'}
-                        //controls={true}
-                        ref={partnerVideo}
-                        autoPlay={true}
-                        muted={true} />
+                            className={'partner-video'}
+                            //controls={true}
+                            ref={partnerVideo}
+                            autoPlay={true}
+                            muted={true} />
 
                     </div>
                 </div>
@@ -413,12 +413,28 @@ function Call() {
 
             {/* Right 1/3 - Timeline Section */}
             <div className="col-span-1 flex flex-col bg-white rounded-2xl p-4 shadow-md overflow-hidden h-full">
-                <h3 className="text-lg font-semibold">This is the Timeline</h3>
-                <Timeline ref = {timelineRef} className="flex-grow mt-4 overflow-auto border p-4">
-                    {/* <CardContent className="h-full">
-                        <p className="text-gray-500 text-sm">Timeline logs will appear here...</p>
-                    </CardContent> */}
-                </Timeline>
+
+
+                {/* Top Timeline */}
+                <div className="flex flex-col flex-1 bg-white rounded-2xl p-4 shadow-md overflow-hidden">
+                    <h3 className="text-lg font-semibold">This is the Top Timeline</h3>
+                    <Timeline ref={timelineRef} className="flex-grow mt-4 overflow-auto border p-4">
+                        {/* Timeline content */}
+                    </Timeline>
+                </div>
+
+                {/* Bottom Timeline */}
+                <div className="flex flex-col flex-1 bg-white rounded-2xl p-4 shadow-md overflow-hidden">
+                    <h3 className="text-lg font-semibold">This is the Bottom Timeline</h3>
+                    <Timeline ref={timelineRef} className="flex-grow mt-4 overflow-auto border p-4">
+                        {/* Timeline content */}
+                    </Timeline>
+                </div>
+
+
+
+
+
             </div>
             <button onClick={() => { setPopupAddProgress(true) }
 
