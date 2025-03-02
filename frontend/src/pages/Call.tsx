@@ -508,7 +508,7 @@ function Call() {
                             {/* Main Video - Fullscreen */}
                             <video
                                 className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
-                                ref={partnerVideo} autoPlay muted
+                                ref={partnerVideo} autoPlay
                             />
 
                             {/* Partner Video - Small & Bottom Right */}
