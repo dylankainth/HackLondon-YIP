@@ -517,7 +517,7 @@ function Call() {
 
                     {/* Video Section - Bigger */}
                     <div className="flex-grow flex items-center justify-center text-white min-h-0">
-                        <div className="relative w-full max-w-3xl aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
+                        <div className="relative w-full aspect-video bg-black m-2 rounded-lg overflow-hidden flex items-center justify-center">
 
                             {/* Main Video - Fullscreen */}
                             <video

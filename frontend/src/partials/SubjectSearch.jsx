@@ -34,7 +34,9 @@ function SubjectSearch() {
 
     const handleSearch = (event) => {
         event.preventDefault();
-        navigate(`/looking/${searchTerm}`);
+        if (searchTerm){
+            navigate(`/looking/${searchTerm}`);
+        }
     }
 
     const chooseRandomSubject = (event) => {
