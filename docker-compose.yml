@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./callserver
+    ports:
+      - "5720:5000"
+    volumes:
+      - ./callserver:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=production
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3234:80"
+    depends_on:
+      - backend
