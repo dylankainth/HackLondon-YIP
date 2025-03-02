@@ -79,16 +79,7 @@ function Call() {
     }
 
 
-    // ending the session, pop up modal to show winner
-    const handleEndSession = () => {
 
-        endCall = true
-        tickTime = false
-
-        socket.emit('generateResults', roomId);
-        
-
-    }
 
 
 
@@ -147,6 +138,21 @@ function Call() {
     const cameraStreamPromise = useRef<Promise<MediaStream>>(Promise.resolve(new MediaStream()));
     const rtcInitialized = useRef(false);
 
+
+    // ending the session, pop up modal to show winner
+    const handleEndSession = () => {
+        // if (!otherUserId.current) {
+
+        //     handleGoHome();
+
+        // }
+        endCall = true
+        tickTime = false
+
+        socket.emit('generateResults', roomId);
+
+
+    }
 
     // on page update, if rtc not initialized, initialize it and the video stream
     useEffect(() => {
@@ -466,9 +472,11 @@ function Call() {
                     <div className="bg-white p-6 md:p-8 rounded-2xl shadow-2xl w-full h-full flex flex-col">
                         {/* Title */}
                         <h2 className="text-2xl font-bold mb-4 text-center text-gray-900 flex-shrink-0">
-                            THE WINNER IS... {winnerName.current}<br></br>{winReason.current}
+                            THE WINNER IS... {winnerName.current}
+                            <br />
                         </h2>
-                        
+                        <p className="max-h-32 overflow-y-auto">{winReason.current}</p>
+
                     </div>
                 </Modal>
             )}
