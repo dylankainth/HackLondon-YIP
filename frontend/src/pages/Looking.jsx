@@ -11,7 +11,8 @@ function Looking() {
 
   // find another partner here
   const findAnotherPartner = () => {
-
+    socket.emit('cancelSearch',searchTerm);
+    navigate('/findpartners');
   }
     const[ran, setRan] = useState(false);
 

@@ -150,7 +150,6 @@ io.on('connection', (socket) => {
   });
   
   socket.on('searchRoom', (searchTerm: string) => { 
-    console.log("COUNT!");
     if (!searchMap[searchTerm] || searchMap[searchTerm].length == 0) {
       // No socket for this search term; add the current socket id
       searchMap[searchTerm] = [socket.id];
@@ -169,6 +168,14 @@ io.on('connection', (socket) => {
         socket.emit('roomFound', roomId);
         console.log(`Found a room for term "${searchTerm}" with sockets ${socket.id} and ${removedSocketId}`);
       }
+    }
+  });
+
+  socket.on('cancelSearch', (searchTerm: string) => {
+    if (searchMap[searchTerm]){
+      searchMap[searchTerm] = searchMap[searchTerm].filter(id => id !== socket.id);
+      console.log("waiting",searchMap);
+      console.log(`Removed ${socket.id} from searchMap under term "${searchTerm}"`);
     }
   });
 
