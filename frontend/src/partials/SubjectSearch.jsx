@@ -1,8 +1,23 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function SubjectSearch({ }) {
+function SubjectSearch() {
     const navigate = useNavigate();
+    const [time, setTime] = useState(() => {
+        const savedTime = localStorage.getItem('checkInTime');
+        return savedTime ? JSON.parse(savedTime) : 30; // Default value 30 minutes
+    });
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const savedTime = localStorage.getItem('checkInTime');
+            if (savedTime) {
+                setTime(JSON.parse(savedTime));
+            }
+        }, 1000); // Check for updates every second
+
+        return () => clearInterval(interval);
+    }, []);
 
     const subjects = ['Math', 'Science', 'History', 'English', 'Art', 'Music', 'Physical Education', 'Computer Science', 'Foreign Language', 'Other'];
     const [searchTerm, setSearchTerm] = useState('');
@@ -19,8 +34,6 @@ function SubjectSearch({ }) {
 
     const handleSearch = (event) => {
         event.preventDefault();
-        //navigate('/call');
-        //navigate(`/call/${'testRoomId'}`);
         navigate(`/looking/${searchTerm}`);
     }
 
@@ -53,14 +66,12 @@ function SubjectSearch({ }) {
     };
 
     return (
-
-
         <div className="bg-blue-50 py-100 pt-32 mb-32 px-8 text-gray-900 flex flex-col items-center gap-y-4">
             {/* Section Title */}
             <h2 className="text-5xl font-extrabold text-center mb-24 w-full">
                 Find Your Partner
             </h2>
-
+            <p>Time: {time} minutes</p>
 
             <div className="relative mt-16 w-full max-w-lg">
                 <form onSubmit={handleSearch} className="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md">
@@ -91,13 +102,8 @@ function SubjectSearch({ }) {
                     </ul>
                 )}
             </div>
-
-
+            export default SubjectSearch;
         </div>
-
-
-
-
     );
 }
 

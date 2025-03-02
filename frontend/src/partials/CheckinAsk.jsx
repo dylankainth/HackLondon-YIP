@@ -1,7 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function CheckInTime() {
-    const [time, setTime] = useState(30); // Default value 30 minutes
+    const [time, setTime] = useState(() => {
+        const savedTime = localStorage.getItem('checkInTime');
+        return savedTime ? JSON.parse(savedTime) : 30; // Default value 30 minutes
+    });
+
+    useEffect(() => {
+        localStorage.setItem('checkInTime', JSON.stringify(time));
+    }, [time]);
 
     // Function to handle input changes (only allows integers)
     const handleChange = (e) => {
@@ -35,7 +42,6 @@ function CheckInTime() {
 
             {/* Time Input Section */}
             <div className="relative mt-6 w-full max-w-lg flex items-center space-x-4">
-
                 <input
                     type="number"
                     value={time}
@@ -44,15 +50,12 @@ function CheckInTime() {
                     max="120"
                     className="h-12 w-24 p-3 text-center border rounded-lg text-lg"
                 />
-
                 <button
                     onClick={decreaseTime}
                     className="h-12 px-4 bg-gray-400 text-white rounded-md hover:bg-gray-500 flex items-center justify-center"
                 >
                     -5 min
                 </button>
-
-
                 <button
                     onClick={increaseTime}
                     className="h-12 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center justify-center"
