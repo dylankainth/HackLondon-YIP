@@ -16,7 +16,41 @@ function Call() {
 
     const [popupAddProgress, setPopupAddProgress] = useState(false)
     const [progressInput, setProgressInput] = useState('');
+    const [elapsedTime, setElapsedTime] = useState(0);
 
+    const [countdownTime, setCountdownTime] = useState(() => {
+        const savedTime = localStorage.getItem('checkInTime');
+        return savedTime ? JSON.parse(savedTime) * 60 : 30 * 60; // Default value 30 minutes in seconds
+    });
+
+    const originalTime = useRef(countdownTime);
+
+    useEffect(() => {
+        const savedTime = localStorage.getItem('checkInTime');
+        originalTime.current = savedTime ? JSON.parse(savedTime) * 60 : 30 * 60;
+        setCountdownTime(originalTime.current);
+    }, []);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setElapsedTime(prev => prev + 1);
+            setCountdownTime(prev => (prev > 0 ? prev - 1 : 0));
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
+
+    useEffect(() => {
+        if (countdownTime === 0) {
+            setPopupAddProgress(true);
+        }
+    }, [countdownTime]);
+
+    const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    };
 
     //const navigate = useNavigate();
 
@@ -49,6 +83,9 @@ function Call() {
         // Remove the beforeunload listener:
         window.removeEventListener('beforeunload', beforeUnloadHandler);
         setPopupAddProgress(false);
+
+        // Reset countdown timer
+        setCountdownTime(originalTime.current);
 
         //timelineRef.current?.addEntry(progressInput,Date.now());
         socket.emit('timelineUpdate', { roomId, nickname, progressInput });
@@ -397,7 +434,8 @@ function Call() {
                 <div className="flex flex-col bg-gray-900 rounded-2xl overflow-hidden h-full shadow-lg flex-grow">
                     {/* Top Bar */}
                     <div className="flex justify-between items-center p-4 bg-gray-800 text-white">
-                        <span className="text-sm font-medium">Time Elapsed: 00:00</span>
+                        <span className="text-sm font-medium">Time Elapsed: {formatTime(elapsedTime)}</span>
+                        <span className="text-sm font-medium">Time Remaining: {formatTime(countdownTime)}</span>
                         <button
                             onClick={handleGoHome}
                             className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded-md shadow-md transition">
