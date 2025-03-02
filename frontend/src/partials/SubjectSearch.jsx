@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { nanoid } from 'nanoid';
 import { useNavigate } from 'react-router-dom';
 
 function SubjectSearch({ }) {
@@ -21,7 +20,7 @@ function SubjectSearch({ }) {
     const handleSearch = (event) => {
         event.preventDefault();
         //navigate('/call');
-        navigate(`/call/${nanoid(8)}/${'testRoomId'}`);
+        navigate(`/call/${'testRoomId'}`);
     }
 
     const chooseRandomSubject = (event) => {

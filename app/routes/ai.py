@@ -18,19 +18,17 @@ async def get_summary(reqdata: Request):
     summary = summarize_activities(data)
     print("summary: ",summary)
     return {"summary": summary}
-    
 
-class CompareData(BaseModel):
-    user1_activities: List[str]
-    user2_activities: List[str]
 
 @router.post("/compare")
-async def compare_users(data: CompareData):
-    text1 = ". ".join(data.user1_activities)
-    text2 = ". ".join(data.user2_activities)
-    comparison = compare_performance(text1, text2)
-    return {"comparison": comparison}
-
-class CompareData(BaseModel):
-    user1_activities: List[str]
-    user2_activities: List[str]
+async def compare_users(reqdata: Request):
+    data = await reqdata.json()
+    data = data['room']
+    print(data)
+    if len(data) != 2:
+        return {"winner": 0, "reason": "Invalid data"}
+    
+    
+    userdata1 = f"User 1:\n{'\n'.join((str(datetime.datetime.fromtimestamp(int(item['time'])//1000).strftime('%H:%M'))+' : '+item['text'] for item in data[0]['progress']))}"
+    userdata2 = f"User 2:\n{'\n'.join((str(datetime.datetime.fromtimestamp(int(item['time'])//1000).strftime('%H:%M'))+' : '+item['text'] for item in data[1]['progress']))}"
+    

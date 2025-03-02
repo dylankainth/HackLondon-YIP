@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useAuth } from '../components/AuthContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import Timeline from '../components/Timeline';
 import Modal from '../components/Modal'
@@ -34,8 +35,9 @@ function Call() {
 
 
     // Call handling code
-    const { nickname, roomId } = useParams();
-
+    const { roomId } = useParams();
+    const { user, setUser } = useAuth();
+    const nickname = user?.name;
     const getResults= () => {
         socket.emit('generateResults',roomId);
     }
@@ -397,21 +399,23 @@ function Call() {
                 {/* Video Section */}
                 <div className="flex-grow flex items-center justify-center text-white">
                     <div className={'video-container'}>
-                        {/*ME*/}
+                        {/*<p>{nickname}</p>*/}
+
                         <video
                             className={'my-video'}
                             ref={myVideo}
                             autoPlay={true}
                             muted={true} />
 
-                        {/*PARTNER*/}
+                        
                         <video
                             className={'partner-video'}
                             //controls={true}
                             ref={partnerVideo}
                             autoPlay={true}
                             muted={true} />
-
+                        {/*<p>{otherUserNickname}</p>*/}
+                        
                     </div>
                 </div>
 

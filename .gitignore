@@ -28,4 +28,4 @@ __pycache__/
 *.pyc
 
 # misc
-*.env".env" 
+*.env
