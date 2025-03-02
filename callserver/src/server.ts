@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as http from 'http';
 import { Server } from 'socket.io';
 import { config } from 'dotenv';
+import { nanoid } from 'nanoid';
 
 config();
 
@@ -34,7 +35,11 @@ interface ITimelineUpdate {
   progressInput: string
 }
 
+interface SearchMap {
+  [key: string]: string[]
+}
 
+const searchMap: SearchMap = {};
 const rooms: IRoom = {};
 
 io.on('connection', (socket) => {
@@ -116,6 +121,21 @@ io.on('connection', (socket) => {
     */
   });
   
+  socket.on('searchRoom', (searchTerm: string) => { 
+    if (searchMap[searchTerm]) {
+      const otherSocketId = searchMap[searchTerm].pop()!;
+      if (otherSocketId === socket.id) return;
+      if (searchMap[searchTerm].length === 0) delete searchMap[searchTerm];
+      const roomId = nanoid(8);
+      io.to(otherSocketId).emit('roomFound', roomId);
+      socket.emit('roomFound', roomId);
+      console.log("found:",searchTerm,socket.id,otherSocketId);
+    }
+    else{
+      searchMap[searchTerm] = [socket.id];
+      console.log("added:",searchTerm,socket.id);
+    }
+  });
   /**
    * Signaling
    * Just passing DTOs from one peer to another

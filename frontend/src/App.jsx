@@ -3,6 +3,7 @@ import Home from "./pages/Home"
 import Call from "./pages/Call.tsx"
 import Login from "./pages/Login"
 import FindPartners from "./pages/FindPartners"
+import Looking from "./pages/Looking"
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
 
           <Route path="/" element={<Home />} />
           <Route path="/call/:roomId" element={<Call />} />
+          <Route path="/looking/:searchTerm" element={<Looking />} />
           <Route path="/login" element={<Login />} />
           <Route path="/findpartners" element={<FindPartners />} />
 

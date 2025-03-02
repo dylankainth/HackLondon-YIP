@@ -20,7 +20,8 @@ function SubjectSearch({ }) {
     const handleSearch = (event) => {
         event.preventDefault();
         //navigate('/call');
-        navigate(`/call/${'testRoomId'}`);
+        //navigate(`/call/${'testRoomId'}`);
+        navigate(`/looking/${searchTerm}`);
     }
 
     const chooseRandomSubject = (event) => {
