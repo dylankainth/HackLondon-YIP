@@ -1,6 +1,8 @@
 function FeaturesHome() {
     return (
-        <div className="w-full py-16 bg-indigo-100 flex flex-col items-center">
+        <div className="w-full py-16 bg-gradient-to-b from-blue-100 to-indigo-200
+
+ flex flex-col items-center">
             <h2 className="text-4xl font-extrabold text-center mb-12">
                 Features
             </h2>
