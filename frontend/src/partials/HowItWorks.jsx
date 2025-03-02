@@ -1,7 +1,8 @@
 
 function HowItWorks() {
     return (
-        <div className="bg-gradient-to-r from-blue-100 to-indigo-200 pt-10 pb-10 px-8 text-gray-900 flex flex-col items-center">
+        <div className="bg-gradient-to-b from-orange-300 to-pink-500
+ pt-10 pb-10 px-8 text-gray-900 flex flex-col items-center">
             {/* Section Title */}
             <h2 className="text-5xl font-extrabold text-center w-full">
                 How It Works

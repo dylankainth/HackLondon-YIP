@@ -72,7 +72,7 @@ function SubjectSearch() {
                 Find Your Partner
             </h2>
 
-            <div className="relative mt-16 w-full max-w-lg">
+            <div className="relative mt-10 w-full max-w-lg">
                 <form onSubmit={handleSearch} className="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md justify-center">
                     <input
                         type="text"

@@ -34,7 +34,7 @@ function CheckInTime() {
     return (
         <div className="w-full py-10 pt-10 px-8 text-gray-900 flex flex-col items-center">
             {/* Section Title */}
-            <h2 className="text-5xl font-extrabold text-center w-full">
+            <h2 className="text-5xl font-bold text-center w-full">
                 Check In Time
             </h2>
 
@@ -48,17 +48,17 @@ function CheckInTime() {
                     onChange={handleChange}
                     min="1"
                     max="120"
-                    className="h-12 w-24 p-3 text-center border rounded-lg text-lg"
+                    className="h-10 w-24 p-3 text-center border rounded-lg text-lg"
                 />
                 <button
                     onClick={decreaseTime}
-                    className="h-12 px-4 bg-gray-400 text-white rounded-md hover:bg-gray-500 flex items-center justify-center"
+                    className="h-10 px-4 bg-gray-400 text-white rounded-md hover:bg-gray-500 flex items-center justify-center"
                 >
                     -5 min
                 </button>
                 <button
                     onClick={increaseTime}
-                    className="h-12 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center justify-center"
+                    className="h-10 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center justify-center"
                 >
                     +5 min
                 </button>
