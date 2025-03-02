@@ -20,9 +20,9 @@ export interface Progress {
   time: number
 }
 
-export interface TSummary{
-  taskIdx: number,
-  data: string
+export interface WinnerResult {
+  winner: string,
+  reason: string
 }
 
 export interface ISignalDto {
