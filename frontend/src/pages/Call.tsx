@@ -428,7 +428,7 @@ function Call() {
     }, [beforeUnloadHandler]);
 
     return (
-        <div className="grid w-full h-screen overflow-hidden">
+        <div className="grid w-full h-screen overflow-hidden bg-gradient-to-b from-blue-100 via-blue-50 to-teal-50">
             {popupAddProgress && (
                 <Modal handleCloseModal={() => { setPopupAddProgress(false) }}>
                     <div className="bg-white p-6 md:p-8 rounded-2xl shadow-2xl w-full h-full flex flex-col">
@@ -512,12 +512,6 @@ function Call() {
 
                         }
 
-
-                        {/* <button
-                            onClick={handleGoHome}
-                            className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded-md shadow-md transition">
-                            End Call
-                        </button> */}
                     </div>
 
                     {/* Video Section - Bigger */}
@@ -551,22 +545,28 @@ function Call() {
                 </div>
 
                 {/* Right 1/3 - Timeline Section (Bigger) */}
-                <div className="flex flex-col bg-white rounded-2xl p-6 shadow-lg h-full flex-grow">
+                <div className="flex flex-col bg-white rounded-2xl p-6 shadow-lg h-[calc(100vh-48px)] flex-grow overflow-hidden">
                     {/* Top Timeline - Scrollable */}
                     <div className="flex flex-col flex-1 bg-white rounded-xl p-4 shadow-md overflow-hidden border border-gray-200 min-h-0">
-                        <h3 className="text-lg font-semibold text-gray-800">📌 This is the Top Timeline</h3>
-                        <div className="flex-grow mt-4 overflow-y-auto bg-gray-50 rounded-md w-full h-full">
+                        <h3 className="text-lg font-semibold text-gray-800 bg-white rounded-2xl p-2 shadow-lg border-2 border-blue-300">📌 This is the Top Timeline</h3>
+
+                        {/* FIXED: Constrained Height with Overflow Scroll */}
+                        <div className="flex-grow mt-4 overflow-y-auto bg-gray-50 rounded-md w-full max-h-[40vh]">
                             <Timeline ref={timelineRef} />
                         </div>
                     </div>
 
+
                     {/* Bottom Timeline - Scrollable */}
                     <div className="flex flex-col flex-1 bg-white rounded-xl p-4 shadow-md overflow-hidden border border-gray-200 mt-4 min-h-0">
-                        <h3 className="text-lg font-semibold text-gray-800">📌 This is the Bottom Timeline</h3>
-                        <div className="flex-grow mt-4 overflow-y-auto bg-gray-50 rounded-md w-full h-full">
+                        <h3 className="text-lg font-semibold text-gray-800 bg-white rounded-2xl p-2 shadow-lg border-2 border-blue-300">📌 This is the Bottom Timeline</h3>
+
+                        {/* FIXED: Constrained Height with Overflow Scroll */}
+                        <div className="flex-grow mt-4 overflow-y-auto bg-gray-50 rounded-md w-full max-h-[40vh]">
                             <Timeline ref={opponentTimelineRef} />
                         </div>
                     </div>
+
                 </div>
 
 
