@@ -10,6 +10,7 @@ import { signalingServerUrl } from '../consts';
 console.log('signalingServerUrl: ', signalingServerUrl);
 const socket = io(signalingServerUrl);
 
+
 function Call() {
     const timelineRef = useRef(null);
     const opponentTimelineRef = useRef(null);
