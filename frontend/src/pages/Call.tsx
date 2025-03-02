@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Timeline from '../components/Timeline';
 import Modal from '../components/Modal'
 import io from 'socket.io-client';
-import { IIceCandidateDto, ILogs, ISdpDto, ISignalDto,Progress, TSummary } from '../types';
+import { IIceCandidateDto, ILogs, ISdpDto, ISignalDto, Progress, TSummary } from '../types';
 import { signalingServerUrl } from '../consts';
 
 console.log('signalingServerUrl: ', signalingServerUrl);
@@ -38,8 +38,8 @@ function Call() {
     const { roomId } = useParams();
     const { user, setUser } = useAuth();
     const nickname = user?.name;
-    const getResults= () => {
-        socket.emit('generateResults',roomId);
+    const getResults = () => {
+        socket.emit('generateResults', roomId);
     }
 
     // take in user's progress input and do something...
@@ -51,7 +51,7 @@ function Call() {
         setPopupAddProgress(false);
 
         //timelineRef.current?.addEntry(progressInput,Date.now());
-        socket.emit('timelineUpdate', {roomId, nickname, progressInput });
+        socket.emit('timelineUpdate', { roomId, nickname, progressInput });
         setProgressInput('');
         //console.log(progressInput);
     }
@@ -140,12 +140,12 @@ function Call() {
 
         socket.on('opponentUpdate', (args: Progress) => {
             const { text, time } = args;
-            opponentTimelineRef.current?.addEntry(text,time);
+            opponentTimelineRef.current?.addEntry(text, time);
         });
 
         socket.on('summaryResult', (args: Progress) => {
-            const { text,time } = args;
-            timelineRef.current?.addEntry(text,time);
+            const { text, time } = args;
+            timelineRef.current?.addEntry(text, time);
         });
 
         socket.on('userJoined', (args: ISignalDto) => {
@@ -349,16 +349,18 @@ function Call() {
     }, [beforeUnloadHandler]);
 
     return (
-        <div className="grid w-full h-screen overflow-hidden grid-cols-3 gap-4 p-4 mx-auto max-w-screen-px-4">
-
-
-
+        <div className="grid w-full h-screen overflow-hidden">
             {popupAddProgress && (
                 <Modal handleCloseModal={() => { setPopupAddProgress(false) }}>
-                    <div className="bg-white p-6 rounded-lg shadow-lg max-w-full flex flex-col h-full">
-                        <h2 className="text-xl font-bold mb-4 text-center">Add Progress</h2>
+                    <div className="bg-white p-6 md:p-8 rounded-2xl shadow-2xl w-full h-full flex flex-col">
+                        {/* Title */}
+                        <h2 className="text-2xl font-bold mb-4 text-center text-gray-900 flex-shrink-0">
+                            📌 Add Progress
+                        </h2>
 
-                        <form onSubmit={handleSubmitProgress} className="flex flex-col flex-grow h-full">
+                        {/* Form */}
+                        <form onSubmit={handleSubmitProgress} className="flex flex-col flex-grow space-y-4 h-full">
+                            {/* Textarea Input */}
                             <textarea
                                 type="text"
                                 placeholder="What have you done..."
@@ -367,10 +369,14 @@ function Call() {
                                     const value = event.target.value;
                                     setProgressInput(value);
                                 }}
-                                className="flex-grow p-3 border rounded w-full resize-none"
+                                className="w-full flex-grow p-4 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm placeholder-gray-500 text-gray-900"
                             />
-                            <button type="submit" className="p-2 bg-blue-500 text-white rounded self-center mt-4 w-1/2">
-                                Submit
+
+                            {/* Submit Button */}
+                            <button
+                                type="submit"
+                                className="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-all duration-200 shadow-md focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                Submit Progress
                             </button>
                         </form>
                     </div>
@@ -379,92 +385,70 @@ function Call() {
 
 
 
-
-
-
-            {/* Left 2/3 - Video Call Section */}
-            <div className="col-span-2 flex flex-col bg-gray-900 rounded-2xl overflow-hidden h-full">
-                {/* Top Bar */}
-                <div className="flex justify-between items-center p-4 bg-gray-800 text-white">
-                    <div className="flex items-center gap-2">
-                        {/* <Timer size={20} /> */}
-                        <span>Time Elapsed: 00:00</span>
+            {/* Main Grid Layout */}
+            <div className="grid w-full h-full overflow-hidden grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 p-6 mx-auto">
+                {/* Left 2/3 - Video Call Section */}
+                <div className="flex flex-col bg-gray-900 rounded-2xl overflow-hidden h-full shadow-lg flex-grow">
+                    {/* Top Bar */}
+                    <div className="flex justify-between items-center p-4 bg-gray-800 text-white">
+                        <span className="text-sm font-medium">Time Elapsed: 00:00</span>
+                        <button
+                            onClick={handleGoHome}
+                            className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded-md shadow-md transition">
+                            End Call
+                        </button>
                     </div>
-                    <button onClick={handleGoHome} variant="destructive">
-                        {/* <PhoneOff />  */}
-                        End Call
-                    </button>
+
+                    {/* Video Section - Bigger */}
+                    <div className="flex-grow flex items-center justify-center text-white min-h-0">
+                        <div className="relative w-full max-w-3xl aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
+                            <video className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
+                                ref={myVideo} autoPlay muted />
+                            <video className="absolute top-0 left-0 w-full h-full object-cover opacity-50 rounded-lg"
+                                ref={partnerVideo} autoPlay muted />
+                        </div>
+                    </div>
+
+                    {/* Bottom Bar */}
+                    <div className="flex justify-center gap-4 p-4 bg-gray-800 text-white">
+                        <button
+                            onClick={() => setPopupAddProgress(true)}
+                            className=" px-4 py-2  bg-blue-500 hover:bg-blue-600 text-white text-base font-semibold rounded-lg shadow-md transition">
+                            ➕ Add Progress
+                        </button>
+
+                        <button
+                            onClick={() => getResults()}
+                            className=" px-4 py-2  bg-blue-500 hover:bg-blue-600 text-white text-base font-semibold rounded-lg shadow-md transition">
+                            Report
+                        </button>
+
+                    </div>
                 </div>
 
-                {/* Video Section */}
-                <div className="flex-grow flex items-center justify-center text-white">
-                    <div className={'video-container'}>
-                        {/*<p>{nickname}</p>*/}
-
-                        <video
-                            className={'my-video'}
-                            ref={myVideo}
-                            autoPlay={true}
-                            muted={true} />
-
-                        
-                        <video
-                            className={'partner-video'}
-                            //controls={true}
-                            ref={partnerVideo}
-                            autoPlay={true}
-                            muted={true} />
-                        {/*<p>{otherUserNickname}</p>*/}
-                        
+                {/* Right 1/3 - Timeline Section (Bigger) */}
+                <div className="flex flex-col bg-white rounded-2xl p-6 shadow-lg h-full flex-grow">
+                    {/* Top Timeline */}
+                    <div className="flex flex-col flex-1 bg-white rounded-xl p-4 shadow-md overflow-hidden border border-gray-200 min-h-0">
+                        <h3 className="text-lg font-semibold text-gray-800">📌 This is the Top Timeline</h3>
+                        <Timeline ref={timelineRef} className="flex-grow mt-4 overflow-auto p-4 bg-gray-50 rounded-md">
+                            {/* Timeline content */}
+                        </Timeline>
                     </div>
-                </div>
 
-                {/* Bottom Bar */}
-                <div className="flex justify-center gap-4 p-4 bg-gray-800 text-white">
-                    <button variant="outline">
-                        {/* <MicOff /> */}
-                        Mute
-                    </button>
-                    <button variant="outline">
-                        {/* <CameraOff />  */}
-                        Toggle Video
-                    </button>
+                    {/* Bottom Timeline */}
+                    <div className="flex flex-col flex-1 bg-white rounded-xl p-4 shadow-md overflow-hidden border border-gray-200 mt-4 min-h-0">
+                        <h3 className="text-lg font-semibold text-gray-800">📌 This is the Bottom Timeline</h3>
+                        <Timeline ref={opponentTimelineRef} className="flex-grow mt-4 overflow-auto p-4 bg-gray-50 rounded-md">
+                            {/* Timeline content */}
+                        </Timeline>
+                    </div>
                 </div>
             </div>
 
-            {/* Right 1/3 - Timeline Section */}
-            <div className="col-span-1 flex flex-col bg-white rounded-2xl p-4 shadow-md overflow-hidden h-full">
-
-
-                {/* Top Timeline */}
-                <div className="flex flex-col flex-1 bg-white rounded-2xl p-4 shadow-md overflow-hidden">
-                    <h3 className="text-lg font-semibold">This is the Top Timeline</h3>
-                    <Timeline ref={timelineRef} className="flex-grow mt-4 overflow-auto border p-4">
-                        {/* Timeline content */}
-                    </Timeline>
-                </div>
-
-                {/* Bottom Timeline */}
-                <div className="flex flex-col flex-1 bg-white rounded-2xl p-4 shadow-md overflow-hidden">
-                    <h3 className="text-lg font-semibold">This is the Bottom Timeline</h3>
-                    <Timeline ref={opponentTimelineRef} className="flex-grow mt-4 overflow-auto border p-4">
-                        {/* Timeline content */}
-                    </Timeline>
-                </div>
-
-
-
-
-
-            </div>
-            <button onClick={() => { setPopupAddProgress(true) }
-
-            }>Add Progress</button>
-            <button onClick={() => { getResults() }
-
-            }>Report</button>
         </div>
-    )
+    );
 }
+
 
 export default Call;
