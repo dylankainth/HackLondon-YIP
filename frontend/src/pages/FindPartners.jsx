@@ -26,9 +26,9 @@ function FindPartners() {
     };
 
     return (
-        <div className="min-h-screen bg-white left-0 right-0">
+        <div className="min-h-screen left-0 right-0 bg-blue-50">
             {/* Header */}
-            <div className="top-0 left-0 right-0 w-full h-16 bg-gradient-to-b from-blue-50 to-white shadow-md z-50 flex items-center justify-between px-6">
+            <div className="top-0 left-0 right-0 w-full h-16 shadow-md z-50 flex items-center justify-between px-6">
                 <img src={user?.picture} alt="Profile" className="w-12 h-12 rounded-full ml-4" />
                 <h2 className="text-xl font-semibold">Welcome, {user?.name} 👋</h2>
                 <button
@@ -39,7 +39,7 @@ function FindPartners() {
             </div>
 
             {/* Find Your Partner Section */}
-            <div className="container w-full">
+            <div className="w-full px-4 md:px-8 lg:px-16">
                 <CheckinAsk />
                 <SubjectSearch />
             </div>

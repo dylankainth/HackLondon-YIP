@@ -66,15 +66,14 @@ function SubjectSearch() {
     };
 
     return (
-        <div className="bg-blue-50 py-100 pt-32 mb-32 px-8 text-gray-900 flex flex-col items-center gap-y-4">
+        <div className="py-5 pt-5 px-8 text-gray-900 flex flex-col items-center">
             {/* Section Title */}
-            <h2 className="text-5xl font-extrabold text-center mb-24 w-full">
+            <h2 className="text-5xl font-extrabold text-center w-full">
                 Find Your Partner
             </h2>
-            <p>Time: {time} minutes</p>
 
             <div className="relative mt-16 w-full max-w-lg">
-                <form onSubmit={handleSearch} className="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md">
+                <form onSubmit={handleSearch} className="flex items-center space-x-4 bg-white p-4 rounded-lg shadow-md justify-center">
                     <input
                         type="text"
                         placeholder="Search for a subject..."
@@ -102,7 +101,6 @@ function SubjectSearch() {
                     </ul>
                 )}
             </div>
-            export default SubjectSearch;
         </div>
     );
 }
