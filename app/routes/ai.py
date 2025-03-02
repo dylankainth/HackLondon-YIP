@@ -1,5 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from pydantic import BaseModel
+import datetime
 from typing import List
 from app.services.gemini_service import summarize_activities, compare_performance
 
@@ -9,12 +10,15 @@ class Activities(BaseModel):
     activities: List[str]
 
 @router.post("/summary")
-async def get_summary(data: Activities):
-    text = ". ".join(data.activities)
-    print(text)
-    return {}
-    summary = summarize_activities(text)
+async def get_summary(reqdata: Request):
+    data = await reqdata.json()
+    data = data['text']
+
+    print("raw: ",data)
+    summary = summarize_activities(data)
+    print("summary: ",summary)
     return {"summary": summary}
+    
 
 class CompareData(BaseModel):
     user1_activities: List[str]

@@ -14,6 +14,17 @@ export interface ILogs {
   remoteDescription: any
 }
 
+
+export interface Progress {
+  text: string,
+  time: number
+}
+
+export interface TSummary{
+  taskIdx: number,
+  data: string
+}
+
 export interface ISignalDto {
   otherUserSocketId: string,
   otherUserNickname: string

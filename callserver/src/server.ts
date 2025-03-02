@@ -14,14 +14,26 @@ const io = new Server(httpServer, {
   cors: { origin: CORS_ORIGIN_BASE_URL },
 });
 
+interface Progress {
+  text: string,
+  time: number
+}
+
 interface IRoom {
-  [key: string]: { socketId: string, nickname: string }[];
+  [key: string]: { socketId: string, nickname: string, progress: Progress[] }[];
 }
 
 interface ISignalDto {
   roomId: string,
   nickname: string
 }
+
+interface ITimelineUpdate {
+  roomId: string,
+  nickname: string,
+  progressInput: string
+}
+
 
 const rooms: IRoom = {};
 
@@ -30,8 +42,8 @@ io.on('connection', (socket) => {
     console.log('someone joined');
     const { roomId, nickname } = args;
 
-    if (rooms[roomId]) rooms[roomId].push({ socketId: socket.id, nickname });
-    else rooms[roomId] = [{ socketId: socket.id, nickname }];
+    if (rooms[roomId]) rooms[roomId].push({ socketId: socket.id, nickname, progress: [] });
+    else rooms[roomId] = [{ socketId: socket.id, nickname,progress: [] }];
     const otherUser = rooms[roomId].find((item) => item.socketId !== socket.id);
 
     if (otherUser && otherUser.socketId !== socket.id) {
@@ -55,6 +67,55 @@ io.on('connection', (socket) => {
     }
   });
 
+  socket.on('timelineUpdate', (args: ITimelineUpdate) => {
+    const { roomId, nickname, progressInput } = args;
+    const room = rooms[roomId];
+    const progressEntry = { text: progressInput, time: Date.now() };
+    const participant = room.find((participant) => participant.nickname === nickname);
+    if (participant) {
+      participant.progress.push(progressEntry);
+    }
+    console.log('timelineUpdate rooms: ', rooms);
+    // Notify all participants except the sender
+    room.forEach(({ socketId }) => {
+      if (socketId !== socket.id) {
+        io.to(socketId).emit('opponentUpdate', progressEntry);
+      }
+    });
+
+    fetch("http://localhost:8000/api/ai/summary", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({text: progressInput})
+    }).then(response => response.json())
+    .then(data => {
+      console.log("results:", data);
+      io.to(socket.id).emit('summaryResult', {text: data['summary'],time: Date.now()});
+    })
+    .catch(error => console.error("Error posting progress:", error));
+
+  });
+
+  socket.on('generateResults',(roomId: string) => {
+    const room = rooms[roomId];
+    console.log("room:",roomId);
+
+    fetch("http://localhost:8000/api/ai/compare", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({room: room.slice(0,2)})
+    }).then(response => response.json())
+    .then(data => console.log("results:", data))
+    .catch(error => console.error("Error posting progress:", error));
+    
+    /*
+    for (let i = 0; (i < room.length) && (i < 2); i++) {
+      const { socketId, nickname, progress } = room[i];
+      console.log("result:",nickname,progress);
+    }
+    */
+  });
+  
   /**
    * Signaling
    * Just passing DTOs from one peer to another
@@ -103,6 +164,8 @@ io.on('connection', (socket) => {
     }
     console.log('callRejected rooms: ', rooms);
   });
+
+
 
 });
 
