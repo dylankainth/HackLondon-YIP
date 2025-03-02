@@ -9,12 +9,17 @@ import { signalingServerUrl } from '../consts';
 
 console.log('signalingServerUrl: ', signalingServerUrl);
 const socket = io(signalingServerUrl);
+let endCall = false;
+let tickTime = true;
 
 
 function Call() {
+
+
     const timelineRef = useRef(null);
     const opponentTimelineRef = useRef(null);
 
+    const [showWinner, setShowWinner] = useState(false);
     const [popupAddProgress, setPopupAddProgress] = useState(false)
     const [progressInput, setProgressInput] = useState('');
     const [elapsedTime, setElapsedTime] = useState(0);
@@ -34,8 +39,14 @@ function Call() {
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setElapsedTime(prev => prev + 1);
-            setCountdownTime(prev => (prev > 0 ? prev - 1 : 0));
+
+            if (tickTime) {
+
+                setElapsedTime(prev => prev + 1);
+                setCountdownTime(prev => (prev > 0 ? prev - 1 : 0));
+            }
+
+
         }, 1000);
 
         return () => clearInterval(timer);
@@ -65,6 +76,18 @@ function Call() {
         }
         window.location.href = '/findpartners'; // Navigate to FindPartners
         // navigate('/findpartners'); // Uncomment if using useNavigate
+    }
+
+
+    // ending the session, pop up modal to show winner
+    const handleEndSession = () => {
+
+        endCall = true
+        tickTime = false
+
+
+        setShowWinner(true)
+
     }
 
 
@@ -427,6 +450,23 @@ function Call() {
                 </Modal>
             )}
 
+            {showWinner && (
+                <Modal handleCloseModal={() => {
+
+                    setShowWinner(false)
+
+
+                }}>
+                    <div className="bg-white p-6 md:p-8 rounded-2xl shadow-2xl w-full h-full flex flex-col">
+                        {/* Title */}
+                        <h2 className="text-2xl font-bold mb-4 text-center text-gray-900 flex-shrink-0">
+                            THE WINNER IS...
+                        </h2>
+
+                    </div>
+                </Modal>
+            )}
+
 
 
             {/* Main Grid Layout */}
@@ -437,11 +477,28 @@ function Call() {
                     <div className="flex justify-between items-center p-4 bg-gray-800 text-white">
                         <span className="text-sm font-medium">Time Elapsed: {formatTime(elapsedTime)}</span>
                         <span className="text-sm font-medium">Time Remaining: {formatTime(countdownTime)}</span>
-                        <button
+
+                        {endCall ? (<button
                             onClick={handleGoHome}
                             className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded-md shadow-md transition">
                             End Call
-                        </button>
+                        </button>) :
+                            (<button
+                                onClick={handleEndSession}
+                                className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded-md shadow-md transition">
+                                End Session
+                            </button>)
+
+
+
+                        }
+
+
+                        {/* <button
+                            onClick={handleGoHome}
+                            className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded-md shadow-md transition">
+                            End Call
+                        </button> */}
                     </div>
 
                     {/* Video Section - Bigger */}
