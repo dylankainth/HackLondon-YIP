@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { useAuth } from '../components/AuthContext'; // Import Auth Context
-import logo from '../logo.png'; // Import logo image
+import logo from '../images/logo.png'; // Import logo image
 
 function Header() {
     const navigate = useNavigate();

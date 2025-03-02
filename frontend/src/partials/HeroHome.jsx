@@ -1,4 +1,5 @@
 import React from "react";
+import personWorking from "../images/person_working.png";
 
 const HeroHome = () => {
     return (
@@ -18,11 +19,11 @@ const HeroHome = () => {
             </div>
 
             {/* Right Side - Image Placement Improved */}
-            <div className="w-full md:w-1/3 flex justify-center md:justify-start">
+            <div className="w-full md:w-1/3 flex justify-center md:justify-start ">
                 <img
-                    src="path/to/your/image.jpg"
+                    src={personWorking}
                     alt="Productivity Illustration"
-                    className="max-w-sm md:max-w-md w-full h-auto rounded-lg shadow-lg"
+                    className="max-w-sm md:max-w-md w-full h-auto rounded-lg"
                 />
             </div>
         </div>

@@ -26,11 +26,13 @@ function FindPartners() {
     };
 
     return (
-        <div className="min-h-screen left-0 right-0 bg-gradient-to-b from-blue-100 to-indigo-300
+        <div className="min-h-screen left-0 right-0 bg-gradient-to-b from-blue-200 to-indigo-200
+
 
 ">
             {/* Header */}
-            <div className="bg-gradient-to-r from-blue-300 to-indigo-400
+            <div className="bg-gradient-to-r from-blue-400 via-blue-400 to-teal-400
+
 
 
  top-0 left-0 right-0 w-full h-16 shadow-md z-50 flex items-center justify-between px-6">
