@@ -32,16 +32,16 @@ function CheckInTime() {
     };
 
     return (
-        <div className="bg-blue-50 py-100 pt-32 mb-32 px-8 text-gray-900 flex flex-col items-center gap-y-4">
+        <div className="w-full py-10 pt-10 px-8 text-gray-900 flex flex-col items-center">
             {/* Section Title */}
-            <h2 className="text-5xl font-extrabold text-center mb-12 w-full">
+            <h2 className="text-5xl font-extrabold text-center w-full">
                 Check In Time
             </h2>
 
             <p className="text-gray-600 mt-2">Set your check-in time (1 min - 2 hours)</p>
 
             {/* Time Input Section */}
-            <div className="relative mt-6 w-full max-w-lg flex items-center space-x-4">
+            <div className="relative mt-6 w-full max-w-lg flex items-center justify-center space-x-4">
                 <input
                     type="number"
                     value={time}
