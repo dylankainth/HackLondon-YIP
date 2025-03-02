@@ -417,7 +417,7 @@ function Call() {
 
                             {/* Partner Video - Small & Bottom Right */}
                             <video
-                                className="absolute bottom-4 right-4 w-1/4 h-auto object-cover rounded-lg opacity-70 shadow-lg border-2 border-white"
+                                className="absolute bottom-4 right-4 w-1/4 h-auto object-cover rounded-lg opacity-100 shadow-lg border-2 border-white"
                                 ref={myVideo} autoPlay muted
                             />
                         </div>
@@ -443,22 +443,24 @@ function Call() {
 
                 {/* Right 1/3 - Timeline Section (Bigger) */}
                 <div className="flex flex-col bg-white rounded-2xl p-6 shadow-lg h-full flex-grow">
-                    {/* Top Timeline */}
+                    {/* Top Timeline - Scrollable */}
                     <div className="flex flex-col flex-1 bg-white rounded-xl p-4 shadow-md overflow-hidden border border-gray-200 min-h-0">
                         <h3 className="text-lg font-semibold text-gray-800">📌 This is the Top Timeline</h3>
-                        <Timeline ref={timelineRef} className="flex-grow mt-4 overflow-auto p-4 bg-gray-50 rounded-md">
-                            {/* Timeline content */}
-                        </Timeline>
+                        <div className="flex-grow mt-4 overflow-y-auto bg-gray-50 rounded-md w-full h-full">
+                            <Timeline ref={timelineRef} />
+                        </div>
                     </div>
 
-                    {/* Bottom Timeline */}
+                    {/* Bottom Timeline - Scrollable */}
                     <div className="flex flex-col flex-1 bg-white rounded-xl p-4 shadow-md overflow-hidden border border-gray-200 mt-4 min-h-0">
                         <h3 className="text-lg font-semibold text-gray-800">📌 This is the Bottom Timeline</h3>
-                        <Timeline ref={opponentTimelineRef} className="flex-grow mt-4 overflow-auto p-4 bg-gray-50 rounded-md">
-                            {/* Timeline content */}
-                        </Timeline>
+                        <div className="flex-grow mt-4 overflow-y-auto bg-gray-50 rounded-md w-full h-full">
+                            <Timeline ref={opponentTimelineRef} />
+                        </div>
                     </div>
                 </div>
+
+
             </div>
 
         </div>
