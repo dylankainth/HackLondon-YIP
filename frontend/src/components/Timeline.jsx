@@ -1,31 +1,31 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
 
 const Timeline = forwardRef((props, ref) => {
-    const [entries, setEntries] = useState([]);
-  
-    // Function to update the timeline entries
-    const addEntry = (text,time) => {
-      const date = new Date(time);
-      setEntries((prevEntries) => [...prevEntries, { time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), text }]);
-    };
+  const [entries, setEntries] = useState([]);
 
-    const setEntry = (idx, text) => {
-        setEntries((prevEntries) => {
-            if (idx < 0 || idx >= prevEntries.length) return prevEntries;
-            return prevEntries.map((entry, index) =>
-                index === idx ? { ...entry, text } : entry
-            );
-        });
-        console.log(entries);
-    };
-  
-    useImperativeHandle(ref, () => ({
-      addEntry, setEntry
-    }));
-  
-    return (
-        <div className="relative border-l-2 border-gray-300 ml-4">
-        {entries.map((entry, index) => (
+  // Function to update the timeline entries
+  const addEntry = (text, time) => {
+    const date = new Date(time);
+    setEntries((prevEntries) => [...prevEntries, { time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), text }]);
+  };
+
+  const setEntry = (idx, text) => {
+    setEntries((prevEntries) => {
+      if (idx < 0 || idx >= prevEntries.length) return prevEntries;
+      return prevEntries.map((entry, index) =>
+        index === idx ? { ...entry, text } : entry
+      );
+    });
+    console.log(entries);
+  };
+
+  useImperativeHandle(ref, () => ({
+    addEntry, setEntry
+  }));
+
+  return (
+    <div className="relative border-l-2 border-gray-300 ml-4">
+      {entries.map((entry, index) => (
         <React.Fragment key={index}>
           <div className="mb-10 ml-6">
             {/* Time */}
@@ -37,9 +37,9 @@ const Timeline = forwardRef((props, ref) => {
             <hr className="border-t border-gray-300 my-2" />
           )}
         </React.Fragment>
-        ))}
-        </div>
-    );
-  });
-  
-  export default Timeline;
+      ))}
+    </div>
+  );
+});
+
+export default Timeline;
