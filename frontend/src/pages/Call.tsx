@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Timeline from '../components/Timeline';
 import Modal from '../components/Modal'
 import io from 'socket.io-client';
-import { IIceCandidateDto, ILogs, ISdpDto, ISignalDto } from '../types';
+import { IIceCandidateDto, ILogs, ISdpDto, ISignalDto,Progress, TSummary } from '../types';
 import { signalingServerUrl } from '../consts';
 
 console.log('signalingServerUrl: ', signalingServerUrl);
@@ -11,6 +11,7 @@ const socket = io(signalingServerUrl);
 
 function Call() {
     const timelineRef = useRef(null);
+    const opponentTimelineRef = useRef(null);
 
     const [popupAddProgress, setPopupAddProgress] = useState(false)
     const [progressInput, setProgressInput] = useState('');
@@ -30,6 +31,15 @@ function Call() {
         // navigate('/findpartners'); // Uncomment if using useNavigate
     }
 
+
+
+    // Call handling code
+    const { nickname, roomId } = useParams();
+
+    const getResults= () => {
+        socket.emit('generateResults',roomId);
+    }
+
     // take in user's progress input and do something...
     const handleSubmitProgress = (event: React.FormEvent) => {
         event.preventDefault();
@@ -38,14 +48,11 @@ function Call() {
         window.removeEventListener('beforeunload', beforeUnloadHandler);
         setPopupAddProgress(false);
 
-        timelineRef.current?.addEntry(progressInput);
+        //timelineRef.current?.addEntry(progressInput,Date.now());
+        socket.emit('timelineUpdate', {roomId, nickname, progressInput });
         setProgressInput('');
         //console.log(progressInput);
     }
-
-
-    // Call handling code
-    const { nickname, roomId } = useParams();
 
     const [otherUserNickname, setOtherUserNickname] = useState<string | undefined>(undefined);
     const [logs, setLogs] = useState<ILogs>({
@@ -127,6 +134,16 @@ function Call() {
             // 1 track for the video and 1 for the audio
             // gives access to the video and audio stream to our peer
             myStream.current?.getTracks().forEach(track => peerRef.current?.addTrack(track, myStream.current));
+        });
+
+        socket.on('opponentUpdate', (args: Progress) => {
+            const { text, time } = args;
+            opponentTimelineRef.current?.addEntry(text,time);
+        });
+
+        socket.on('summaryResult', (args: Progress) => {
+            const { text,time } = args;
+            timelineRef.current?.addEntry(text,time);
         });
 
         socket.on('userJoined', (args: ISignalDto) => {
@@ -426,7 +443,7 @@ function Call() {
                 {/* Bottom Timeline */}
                 <div className="flex flex-col flex-1 bg-white rounded-2xl p-4 shadow-md overflow-hidden">
                     <h3 className="text-lg font-semibold">This is the Bottom Timeline</h3>
-                    <Timeline ref={timelineRef} className="flex-grow mt-4 overflow-auto border p-4">
+                    <Timeline ref={opponentTimelineRef} className="flex-grow mt-4 overflow-auto border p-4">
                         {/* Timeline content */}
                     </Timeline>
                 </div>
@@ -439,6 +456,9 @@ function Call() {
             <button onClick={() => { setPopupAddProgress(true) }
 
             }>Add Progress</button>
+            <button onClick={() => { getResults() }
+
+            }>Report</button>
         </div>
     )
 }

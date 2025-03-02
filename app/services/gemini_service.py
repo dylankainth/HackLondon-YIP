@@ -36,12 +36,12 @@ def summarize_activities(text: str) -> str:
     of the given text using a multi-message prompt. It then extracts and cleans
     the output using extract_output().
     """
+
     prompt = [
         {
             "role": "system",
             "content": (
-                "You are an AI assistant. Summarize the user's text in a concise, helpful manner. "
-                "Do NOT include bullet points, numbering, or extra labels. Write the summary as one short paragraph."
+                "Summarize the user's activity log in a clear, concise, and helpful manner, using language that reflects the user's perspective without referring to themselves as 'I.' Present the summary as one short paragraph without using bullet points, numbering, or additional labels."
             )
         },
         {
@@ -60,10 +60,12 @@ def summarize_activities(text: str) -> str:
     )
 
     result = llm.invoke(prompt)
+    
     # Debug: Uncomment to print full raw result
     # print("DEBUG: Raw LLM result (summarization):", result)
-    raw_summary = extract_output(result)
+    raw_summary = extract_output(result.content)
     final_summary = _clean_output(raw_summary)
+    
     return final_summary if final_summary else "Error in summarization"
 
 def compare_performance(text1: str, text2: str) -> str:
