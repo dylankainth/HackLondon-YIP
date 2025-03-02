@@ -6,8 +6,8 @@ import { nanoid } from 'nanoid';
 
 config();
 
-const CORS_ORIGIN_BASE_URL = process.env.CORS_ORIGIN_BASE_URL || 'http://localhost:3000';
-const PORT = process.env.PORT || 8080;
+const CORS_ORIGIN_BASE_URL = process.env.CORS_ORIGIN_BASE_URL
+const PORT = process.env.PORT;
 
 const app = express();
 const httpServer = http.createServer(app);
