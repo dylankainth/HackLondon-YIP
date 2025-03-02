@@ -39,7 +39,7 @@ function FindPartners() {
             </div>
 
             {/* Find Your Partner Section */}
-            <div className="container mx-auto mt-24 pb-16 text-center left-0 right-0">
+            <div className="container w-full">
                 <CheckinAsk />
                 <SubjectSearch />
             </div>
