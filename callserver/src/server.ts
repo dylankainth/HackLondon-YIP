@@ -39,8 +39,18 @@ interface SearchMap {
   [key: string]: string[]
 }
 
+interface WinnerResult{
+  winner: string,
+  reason: string
+}
+
+interface RoomResultMap{
+  [key: string]: WinnerResult
+}
+
 const searchMap: SearchMap = {};
 const rooms: IRoom = {};
+const roomResults: RoomResultMap = {};
 
 io.on('connection', (socket) => {
   socket.on('joinRoom', (args: ISignalDto) => {
@@ -109,22 +119,32 @@ io.on('connection', (socket) => {
 
   socket.on('generateResults',(roomId: string) => {
     const room = rooms[roomId];
+    const roomResult = roomResults[roomId];
+
     if (room){
       console.log("room:",roomId);
 
-      fetch("http://localhost:8000/api/ai/compare", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({room: room.slice(0,2)})
-      }).then(response => response.json())
-      .then(data => {
-        console.log("results:", data);
+      if (roomResult){
         room.forEach(({ socketId }) => {
-          io.to(socketId).emit('resultsReceived', data);
+          io.to(socketId).emit('resultsReceived', roomResult);
         });
-      })
-      .catch(error => console.error("Error posting progress:", error));
-      
+      }
+      else{
+        fetch("http://localhost:8000/api/ai/compare", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({room: room.slice(0,2)})
+        }).then(response => response.json())
+        .then(data => {
+          roomResults[roomId] = data;
+          console.log("results:", data);
+          room.forEach(({ socketId }) => {
+            io.to(socketId).emit('resultsReceived', data);
+          });
+        })
+        .catch(error => console.error("Error posting progress:", error));  
+      }
+
     }
 
   });

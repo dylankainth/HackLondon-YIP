@@ -26,8 +26,10 @@ async def compare_users(reqdata: Request):
     data = data['room']
     print(data)
     if len(data) != 2:
-        return {"winner": 0, "reason": "Invalid data"}
-    
+        return {"winner": "Nobody", "reason": "Invalid data"}
+
+    elif len(data[0]['progress']) == 0 and len(data[1]['progress']) == 0:
+        return {"winner": "Nobody", "reason": "No one did anything :("}
     
     userdata1 = f"{'\n'.join((str(datetime.datetime.fromtimestamp(int(item['time'])//1000).strftime('%H:%M'))+' : '+item['text'] for item in data[0]['progress']))}"
     userdata2 = f"{'\n'.join((str(datetime.datetime.fromtimestamp(int(item['time'])//1000).strftime('%H:%M'))+' : '+item['text'] for item in data[1]['progress']))}"

@@ -85,8 +85,8 @@ function Call() {
         endCall = true
         tickTime = false
 
-
-        setShowWinner(true)
+        socket.emit('generateResults', roomId);
+        
 
     }
 
@@ -96,9 +96,6 @@ function Call() {
     const { roomId } = useParams();
     const { user, setUser } = useAuth();
     const nickname = user?.name;
-    const getResults = () => {
-        socket.emit('generateResults', roomId);
-    }
 
     // take in user's progress input and do something...
     const handleSubmitProgress = (event: React.FormEvent) => {
@@ -141,6 +138,10 @@ function Call() {
     const peerRef = useRef<RTCPeerConnection>(null!);
     const otherUserId = useRef<string>(null!);
     const myStream = useRef<MediaStream>(null!);
+    const winnerName = useRef<string>(null!);
+    const winReason = useRef<string>(null!);
+
+    //const 
 
     // Create a ref to store the promise
     const cameraStreamPromise = useRef<Promise<MediaStream>>(Promise.resolve(new MediaStream()));
@@ -221,6 +222,11 @@ function Call() {
             const { winner, reason } = args;
             console.log("winner", winner);
             console.log("reason", reason);
+            winnerName.current = winner;
+            winReason.current = reason;
+            endCall = true;
+            tickTime = false;
+            setShowWinner(true)
         });
 
         socket.on('acceptedBy', (name: string) => {
@@ -460,9 +466,9 @@ function Call() {
                     <div className="bg-white p-6 md:p-8 rounded-2xl shadow-2xl w-full h-full flex flex-col">
                         {/* Title */}
                         <h2 className="text-2xl font-bold mb-4 text-center text-gray-900 flex-shrink-0">
-                            THE WINNER IS...
+                            THE WINNER IS... {winnerName.current}<br></br>{winReason.current}
                         </h2>
-
+                        
                     </div>
                 </Modal>
             )}
@@ -526,12 +532,6 @@ function Call() {
                             onClick={() => setPopupAddProgress(true)}
                             className=" px-4 py-2  bg-blue-500 hover:bg-blue-600 text-white text-base font-semibold rounded-lg shadow-md transition">
                             ➕ Add Progress
-                        </button>
-
-                        <button
-                            onClick={() => getResults()}
-                            className=" px-4 py-2  bg-blue-500 hover:bg-blue-600 text-white text-base font-semibold rounded-lg shadow-md transition">
-                            Report
                         </button>
 
                     </div>
