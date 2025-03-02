@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { useAuth } from '../components/AuthContext'; // Import Auth Context
 import logo from '../logo.png'; // Import logo image
@@ -51,7 +51,6 @@ function Header() {
                 </nav>
             </div>
         </header>
-
     );
 }
 

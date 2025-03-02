@@ -1,7 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useState, useRef, useEffect } from 'react';
-import { nanoid } from 'nanoid';
-import SubjectSearch from '../partials/SubjectSearch';
+
 import HeroHome from '../partials/HeroHome';
 import FeaturesHome from '../partials/FeaturesHome';
 import Footer from '../partials/Footer';
@@ -17,7 +15,7 @@ function Home() {
             <Header navigate={navigate} />
 
             {/* Main Content */}
-            <main className="flex-grow w-screen">
+            <main className="flex-grow w-screen mt-16">
                 <HeroHome />
                 <HowItWorks />
                 <FeaturesHome />

@@ -1,11 +1,9 @@
-import { useState } from 'react';
 
 function HowItWorks() {
     return (
-        <div className="bg-gradient-to-r from-blue-100 to-indigo-200
- py-100 pt-32 mb-32 px-8 text-gray-900 flex flex-col items-center gap-y-4">
+        <div className="bg-gradient-to-r from-blue-100 to-indigo-200 pt-10 pb-10 px-8 text-gray-900 flex flex-col items-center">
             {/* Section Title */}
-            <h2 className="text-5xl font-extrabold text-center mb-24 w-full">
+            <h2 className="text-5xl font-extrabold text-center w-full">
                 How It Works
             </h2>
 
