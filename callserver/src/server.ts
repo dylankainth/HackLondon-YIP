@@ -54,7 +54,6 @@ const roomResults: RoomResultMap = {};
 
 io.on('connection', (socket) => {
   socket.on('joinRoom', (args: ISignalDto) => {
-    console.log('someone joined');
     const { roomId, nickname } = args;
 
     if (rooms[roomId]) rooms[roomId].push({ socketId: socket.id, nickname, progress: [] });
@@ -66,6 +65,7 @@ io.on('connection', (socket) => {
       socket.to(otherUser.socketId).emit('userJoined', { otherUserSocketId: socket.id, otherUserNickname: nickname });
       socket.emit('waitingToBeAcceptedBy', otherUser.nickname);
     }
+    console.log("waiting: ", searchMap);
     console.log('joinRoom rooms: ', rooms);
   });
 
@@ -150,7 +150,8 @@ io.on('connection', (socket) => {
   });
   
   socket.on('searchRoom', (searchTerm: string) => { 
-    if (!searchMap[searchTerm]) {
+    console.log("COUNT!");
+    if (!searchMap[searchTerm] || searchMap[searchTerm].length == 0) {
       // No socket for this search term; add the current socket id
       searchMap[searchTerm] = [socket.id];
       console.log(`Added ${socket.id} to searchMap under term "${searchTerm}"`);
@@ -206,6 +207,8 @@ io.on('connection', (socket) => {
       // notify the other user about disconnection
       if (otherUser) socket.to(otherUser.socketId).emit('otherUserDisconnected', otherUser.nickname);
     }
+    console.log('waiting:',searchMap);
+    
     console.log('disconnect rooms: ', rooms);
   });
 

@@ -417,6 +417,7 @@ function Call() {
     useEffect(() => {
         window.addEventListener('beforeunload', beforeUnloadHandler);
         return () => {
+            console.log("unloaded");
             window.removeEventListener('beforeunload', beforeUnloadHandler);
         };
     }, [beforeUnloadHandler]);

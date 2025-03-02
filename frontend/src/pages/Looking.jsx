@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useAuth } from '../components/AuthContext';
+import { useEffect, useState } from 'react';
 import { signalingServerUrl } from '../consts';
 import { useNavigate, useParams } from 'react-router-dom';
 import io from 'socket.io-client';
@@ -8,23 +7,19 @@ const socket = io(signalingServerUrl);
 
 function Looking() {
   const { searchTerm } = useParams();
-  const { user, setUser } = useAuth();
   const navigate = useNavigate();
+    const[ran, setRan] = useState(false);
 
-  useEffect(() => {
-    socket.connect();
-    socket.emit('searchRoom', searchTerm);
-
-    socket.on('roomFound', (roomId) => { 
-      console.log('Room found:', roomId);
-      navigate(`/call/${roomId}`);
-    });
-
-    // Clean up the listener on unmount
-    return () => {
-      socket.off('roomFound');
-    };
-  }, [searchTerm, navigate]);
+    if (!ran) {
+        socket.connect();
+        socket.emit('searchRoom', searchTerm);
+        socket.on('roomFound', (roomId) => { 
+          console.log('Room found:', roomId);
+          navigate(`/call/${roomId}`);
+        });
+    
+        setRan(true);
+    }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
