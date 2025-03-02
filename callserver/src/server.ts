@@ -109,22 +109,24 @@ io.on('connection', (socket) => {
 
   socket.on('generateResults',(roomId: string) => {
     const room = rooms[roomId];
-    console.log("room:",roomId);
+    if (room){
+      console.log("room:",roomId);
 
-    fetch("http://localhost:8000/api/ai/compare", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({room: room.slice(0,2)})
-    }).then(response => response.json())
-    .then(data => console.log("results:", data))
-    .catch(error => console.error("Error posting progress:", error));
-    
-    /*
-    for (let i = 0; (i < room.length) && (i < 2); i++) {
-      const { socketId, nickname, progress } = room[i];
-      console.log("result:",nickname,progress);
+      fetch("http://localhost:8000/api/ai/compare", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({room: room.slice(0,2)})
+      }).then(response => response.json())
+      .then(data => {
+        console.log("results:", data);
+        room.forEach(({ socketId }) => {
+          io.to(socketId).emit('resultsReceived', data);
+        });
+      })
+      .catch(error => console.error("Error posting progress:", error));
+      
     }
-    */
+
   });
   
   socket.on('searchRoom', (searchTerm: string) => { 

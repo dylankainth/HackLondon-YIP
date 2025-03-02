@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Timeline from '../components/Timeline';
 import Modal from '../components/Modal'
 import io from 'socket.io-client';
-import { IIceCandidateDto, ILogs, ISdpDto, ISignalDto, Progress, TSummary } from '../types';
+import { IIceCandidateDto, ILogs, ISdpDto, ISignalDto,Progress, WinnerResult } from '../types';
 import { signalingServerUrl } from '../consts';
 
 console.log('signalingServerUrl: ', signalingServerUrl);
@@ -154,6 +154,12 @@ function Call() {
             setOtherUserNickname(otherUserNickname);
             setLogs(prev => ({ ...prev, answeredSocketId: otherUserSocketId }));
             otherUserId.current = otherUserSocketId;
+        });
+
+        socket.on('resultsReceived', (args: WinnerResult) => {
+            const { winner, reason } = args;
+            console.log("winner",winner);
+            console.log("reason",reason);
         });
 
         socket.on('acceptedBy', (name: string) => {

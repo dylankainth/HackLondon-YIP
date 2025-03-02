@@ -33,6 +33,13 @@ async def compare_users(reqdata: Request):
     userdata2 = f"{'\n'.join((str(datetime.datetime.fromtimestamp(int(item['time'])//1000).strftime('%H:%M'))+' : '+item['text'] for item in data[1]['progress']))}"
     print("userdata1: ",userdata1)
     print("userdata2: ",userdata2)
-    result = compare_performance(userdata1, userdata2)
-    print("result: ",result)
-    return {}
+    reasoning,idx = compare_performance(userdata1, userdata2)
+    winner = "Nobody"
+    if idx == 1:
+        winner = data[0]['nickname']
+    elif idx == 2:
+        winner = data[1]['nickname']
+        
+    print("winner:",winner)
+    print(reasoning)
+    return {"winner": winner, "reason": reasoning.strip()}
