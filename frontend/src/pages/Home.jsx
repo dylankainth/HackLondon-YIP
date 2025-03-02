@@ -10,18 +10,17 @@ import HowItWorks from '../partials/HowItWorks';
 
 function Home() {
     const navigate = useNavigate();
-    
+
     return (
         <div className="flex flex-col min-h-screen bg-white text-gray-900">
             {/* Header */}
-            <Header />
+            <Header navigate={navigate} />
 
             {/* Main Content */}
             <main className="flex-grow w-screen">
                 <HeroHome />
                 <HowItWorks />
                 <FeaturesHome />
-                <SubjectSearch navigate={navigate} />
             </main>
 
             {/* Footer */}

@@ -1,7 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import {nanoid} from 'nanoid';
+import { nanoid } from 'nanoid';
+import { useNavigate } from 'react-router-dom';
 
-function SubjectSearch({ navigate }) {
+function SubjectSearch({ }) {
+    const navigate = useNavigate();
+
     const subjects = ['Math', 'Science', 'History', 'English', 'Art', 'Music', 'Physical Education', 'Computer Science', 'Foreign Language', 'Other'];
     const [searchTerm, setSearchTerm] = useState('');
     const [showDropdown, setShowDropdown] = useState(false);

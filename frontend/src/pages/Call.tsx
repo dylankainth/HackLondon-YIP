@@ -26,8 +26,8 @@ function Call() {
         if (peerRef.current) {
             peerRef.current.close();
         }
-        window.location.href = '/';
-        //navigate('/');
+        window.location.href = '/findpartners'; // Navigate to FindPartners
+        // navigate('/findpartners'); // Uncomment if using useNavigate
     }
 
     // take in user's progress input and do something...
