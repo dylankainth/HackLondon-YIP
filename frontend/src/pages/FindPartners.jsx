@@ -26,10 +26,14 @@ function FindPartners() {
     };
 
     return (
-        <div className="min-h-screen left-0 right-0 bg-gradient-to-b from-blue-100 to-indigo-200
+        <div className="min-h-screen left-0 right-0 bg-gradient-to-b from-blue-100 to-indigo-300
+
 ">
             {/* Header */}
-            <div className="top-0 left-0 right-0 w-full h-16 shadow-md z-50 flex items-center justify-between px-6">
+            <div className="bg-gradient-to-r from-blue-300 to-indigo-400
+
+
+ top-0 left-0 right-0 w-full h-16 shadow-md z-50 flex items-center justify-between px-6">
                 <img src={user?.picture} alt="Profile" className="w-12 h-12 rounded-full ml-4" />
                 <h2 className="text-xl font-semibold">Welcome, {user?.name} 👋</h2>
                 <button

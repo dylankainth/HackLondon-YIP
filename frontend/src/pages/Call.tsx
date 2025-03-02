@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Timeline from '../components/Timeline';
 import Modal from '../components/Modal'
 import io from 'socket.io-client';
-import { IIceCandidateDto, ILogs, ISdpDto, ISignalDto,Progress, WinnerResult } from '../types';
+import { IIceCandidateDto, ILogs, ISdpDto, ISignalDto, Progress, WinnerResult } from '../types';
 import { signalingServerUrl } from '../consts';
 
 console.log('signalingServerUrl: ', signalingServerUrl);
@@ -158,8 +158,8 @@ function Call() {
 
         socket.on('resultsReceived', (args: WinnerResult) => {
             const { winner, reason } = args;
-            console.log("winner",winner);
-            console.log("reason",reason);
+            console.log("winner", winner);
+            console.log("reason", reason);
         });
 
         socket.on('acceptedBy', (name: string) => {
@@ -408,12 +408,21 @@ function Call() {
                     {/* Video Section - Bigger */}
                     <div className="flex-grow flex items-center justify-center text-white min-h-0">
                         <div className="relative w-full max-w-3xl aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
-                            <video className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
-                                ref={myVideo} autoPlay muted />
-                            <video className="absolute top-0 left-0 w-full h-full object-cover opacity-50 rounded-lg"
-                                ref={partnerVideo} autoPlay muted />
+
+                            {/* Main Video - Fullscreen */}
+                            <video
+                                className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
+                                ref={partnerVideo} autoPlay muted
+                            />
+
+                            {/* Partner Video - Small & Bottom Right */}
+                            <video
+                                className="absolute bottom-4 right-4 w-1/4 h-auto object-cover rounded-lg opacity-70 shadow-lg border-2 border-white"
+                                ref={myVideo} autoPlay muted
+                            />
                         </div>
                     </div>
+
 
                     {/* Bottom Bar */}
                     <div className="flex justify-center gap-4 p-4 bg-gray-800 text-white">
