@@ -22,7 +22,7 @@ LockedIn is a virtual co-working/study app designed to help users stay **focused
 - **Progress Timeline** Track your own and your partner's check-in progress side by side
 - **AI Correction Text Correction** AI is used to convey and correct progress logs in a concise manner.
 - **Gamified AI Productivity Analysis** At the end of a session, AI evaluates: Quantity, Quality, Creativity of progress logs to declare the most productive person.
-- **Google Authentication** Sign in and use LockedIn quickily with Google OAuth to create a profile and jump on a call.
+- **Google Authentication** Sign in and use LockedIn quickly with Google OAuth to create a profile and jump on a call.
 
 ## How it Works
 1. **Sign in** - Sign in with a Google account.
