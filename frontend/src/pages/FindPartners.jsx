@@ -3,6 +3,7 @@ import { googleLogout } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import SubjectSearch from '../partials/SubjectSearch';
+import CheckinAsk from '../partials/CheckinAsk';
 
 function FindPartners() {
     const { user, setUser } = useAuth();
@@ -39,6 +40,7 @@ function FindPartners() {
 
             {/* Find Your Partner Section */}
             <div className="container mx-auto mt-24 pb-16 text-center left-0 right-0">
+                <CheckinAsk />
                 <SubjectSearch />
             </div>
         </div>
