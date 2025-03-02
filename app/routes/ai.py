@@ -44,4 +44,8 @@ async def compare_users(reqdata: Request):
         
     print("winner:",winner)
     print(reasoning)
+    reasoning = reasoning.replace("Person 1",data[0]['nickname'])
+    reasoning = reasoning.replace("person 1",data[0]['nickname'])
+    reasoning = reasoning.replace("Person 2",data[1]['nickname'])
+    reasoning = reasoning.replace("person 2",data[1]['nickname'])
     return {"winner": winner, "reason": reasoning.strip()}
