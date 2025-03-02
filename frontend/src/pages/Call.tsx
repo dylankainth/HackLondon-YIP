@@ -549,7 +549,7 @@ function Call() {
                 <div className="flex flex-col bg-white rounded-2xl p-6 shadow-lg h-[calc(100vh-48px)] flex-grow overflow-hidden">
                     {/* Top Timeline - Scrollable */}
                     <div className="flex flex-col flex-1 bg-white rounded-xl p-4 shadow-md overflow-hidden border border-gray-200 min-h-0">
-                        <h3 className="text-lg font-semibold text-gray-800 bg-white rounded-2xl p-2 shadow-lg border-2 border-blue-300">📌 This is the Top Timeline</h3>
+                        <h3 className="text-lg font-semibold text-gray-800 bg-white rounded-2xl p-2 shadow-lg border-2 border-blue-300">📌 Your Timeline</h3>
 
                         {/* FIXED: Constrained Height with Overflow Scroll */}
                         <div className="flex-grow mt-4 overflow-y-auto bg-gray-50 rounded-md w-full max-h-[40vh]">
@@ -560,7 +560,7 @@ function Call() {
 
                     {/* Bottom Timeline - Scrollable */}
                     <div className="flex flex-col flex-1 bg-white rounded-xl p-4 shadow-md overflow-hidden border border-gray-200 mt-4 min-h-0">
-                        <h3 className="text-lg font-semibold text-gray-800 bg-white rounded-2xl p-2 shadow-lg border-2 border-blue-300">📌 This is the Bottom Timeline</h3>
+                        <h3 className="text-lg font-semibold text-gray-800 bg-white rounded-2xl p-2 shadow-lg border-2 border-blue-300">📌 {otherUserNickname}'s Timeline</h3>
 
                         {/* FIXED: Constrained Height with Overflow Scroll */}
                         <div className="flex-grow mt-4 overflow-y-auto bg-gray-50 rounded-md w-full max-h-[40vh]">
