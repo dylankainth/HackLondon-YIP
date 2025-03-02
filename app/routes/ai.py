@@ -29,6 +29,10 @@ async def compare_users(reqdata: Request):
         return {"winner": 0, "reason": "Invalid data"}
     
     
-    userdata1 = f"User 1:\n{'\n'.join((str(datetime.datetime.fromtimestamp(int(item['time'])//1000).strftime('%H:%M'))+' : '+item['text'] for item in data[0]['progress']))}"
-    userdata2 = f"User 2:\n{'\n'.join((str(datetime.datetime.fromtimestamp(int(item['time'])//1000).strftime('%H:%M'))+' : '+item['text'] for item in data[1]['progress']))}"
-    
+    userdata1 = f"{'\n'.join((str(datetime.datetime.fromtimestamp(int(item['time'])//1000).strftime('%H:%M'))+' : '+item['text'] for item in data[0]['progress']))}"
+    userdata2 = f"{'\n'.join((str(datetime.datetime.fromtimestamp(int(item['time'])//1000).strftime('%H:%M'))+' : '+item['text'] for item in data[1]['progress']))}"
+    print("userdata1: ",userdata1)
+    print("userdata2: ",userdata2)
+    result = compare_performance(userdata1, userdata2)
+    print("result: ",result)
+    return {}

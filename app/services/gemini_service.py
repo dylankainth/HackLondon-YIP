@@ -79,7 +79,8 @@ def compare_performance(text1: str, text2: str) -> str:
             "role": "system",
             "content": (
                 "You are an AI assistant. Compare two sets of activities and explain which user appears "
-                "more productive and why. Provide a clear, concise answer with no extra numbering or bullet points."
+                "to be overall more productive and why. Provide a clear, concise answer with no extra numbering or bullet points."
+                "Conclude your answer with 'User 1' or 'User 2' with no special formatting to indicate the more productive user."
             )
         },
         {
@@ -104,6 +105,6 @@ def compare_performance(text1: str, text2: str) -> str:
     result = llm.invoke(prompt)
     # Debug: Uncomment to print full raw result
     # print("DEBUG: Raw LLM result (comparison):", result)
-    raw_comparison = extract_output(result)
+    raw_comparison = extract_output(result.content)
     final_comparison = _clean_output(raw_comparison)
     return final_comparison if final_comparison else "Error in comparison"

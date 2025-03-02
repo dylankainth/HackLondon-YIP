@@ -63,12 +63,17 @@ io.on('connection', (socket) => {
     const { roomId, nickname } = args;
 
     const room = rooms[roomId];
-    const otherUser = room.find((item) => item.socketId !== socket.id);
-    if (otherUser) {
-      // Peer 1 -> Peer 1 (gets the information about the receiver Peer 2)
-      socket.emit('otherUserId', { otherUserSocketId: otherUser.socketId, otherUserNickname: otherUser.nickname });
-      // Peer 1 -> Peer 2 (notify Peer 2 about the caller)
-      socket.to(otherUser.socketId).emit('acceptedBy', nickname);
+    if (room) {
+      const otherUser = room.find((item) => item.socketId !== socket.id);
+      if (otherUser) {
+        // Peer 1 -> Peer 1 (gets the information about the receiver Peer 2)
+        socket.emit('otherUserId', { otherUserSocketId: otherUser.socketId, otherUserNickname: otherUser.nickname });
+        // Peer 1 -> Peer 2 (notify Peer 2 about the caller)
+        socket.to(otherUser.socketId).emit('acceptedBy', nickname);
+      }
+    }
+    else{
+      console.log('roomid not found ', roomId);
     }
   });
 
@@ -82,11 +87,7 @@ io.on('connection', (socket) => {
     }
     console.log('timelineUpdate rooms: ', rooms);
     // Notify all participants except the sender
-    room.forEach(({ socketId }) => {
-      if (socketId !== socket.id) {
-        io.to(socketId).emit('opponentUpdate', progressEntry);
-      }
-    });
+
 
     fetch("http://localhost:8000/api/ai/summary", {
       method: "POST",
@@ -96,6 +97,11 @@ io.on('connection', (socket) => {
     .then(data => {
       console.log("results:", data);
       io.to(socket.id).emit('summaryResult', {text: data['summary'],time: Date.now()});
+      room.forEach(({ socketId }) => {
+        if (socketId !== socket.id) {
+          io.to(socketId).emit('opponentUpdate', {text: data['summary'],time: Date.now()});
+        }
+      });
     })
     .catch(error => console.error("Error posting progress:", error));
 
@@ -122,20 +128,27 @@ io.on('connection', (socket) => {
   });
   
   socket.on('searchRoom', (searchTerm: string) => { 
-    if (searchMap[searchTerm]) {
-      const otherSocketId = searchMap[searchTerm].pop()!;
-      if (otherSocketId === socket.id) return;
-      if (searchMap[searchTerm].length === 0) delete searchMap[searchTerm];
-      const roomId = nanoid(8);
-      io.to(otherSocketId).emit('roomFound', roomId);
-      socket.emit('roomFound', roomId);
-      console.log("found:",searchTerm,socket.id,otherSocketId);
-    }
-    else{
+    if (!searchMap[searchTerm]) {
+      // No socket for this search term; add the current socket id
       searchMap[searchTerm] = [socket.id];
-      console.log("added:",searchTerm,socket.id);
+      console.log(`Added ${socket.id} to searchMap under term "${searchTerm}"`);
+    } else {
+      // There exists at least one socket id; remove the last one from the array
+      const removedSocketId = searchMap[searchTerm].pop()!;
+      if (removedSocketId === socket.id) {
+        // If the last socket id was the same as the current one, do nothing
+        searchMap[searchTerm].push(removedSocketId);
+        //console.log(`Did not remove ${removedSocketId} from searchMap for term "${searchTerm}"`);
+      } else {
+        // If the last socket id was different, notify both sockets that a room has been found
+        const roomId = nanoid(8);
+        io.to(removedSocketId).emit('roomFound', roomId);
+        socket.emit('roomFound', roomId);
+        console.log(`Found a room for term "${searchTerm}" with sockets ${socket.id} and ${removedSocketId}`);
+      }
     }
   });
+
   /**
    * Signaling
    * Just passing DTOs from one peer to another
