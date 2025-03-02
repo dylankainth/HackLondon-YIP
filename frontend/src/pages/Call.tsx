@@ -472,14 +472,19 @@ function Call() {
                     <div className="bg-white p-6 md:p-8 rounded-2xl shadow-2xl w-full h-full flex flex-col">
                         {/* Title */}
                         <h2 className="text-2xl font-bold mb-4 text-center text-gray-900 flex-shrink-0">
-                            THE WINNER IS... {winnerName.current}
+                            The Winner Is {winnerName.current}
                             <br />
                         </h2>
-                        <p className="max-h-32 overflow-y-auto">{winReason.current}</p>
+
+                        <div className="flex-grow overflow-y-auto max-h-100 p-2 bg-gray-100 rounded-md text-gray-800 w-full break-words">
+                            {winReason.current}
+
+                        </div>
 
                     </div>
                 </Modal>
-            )}
+            )
+            }
 
 
 
@@ -567,7 +572,7 @@ function Call() {
 
             </div>
 
-        </div>
+        </div >
     );
 }
 
